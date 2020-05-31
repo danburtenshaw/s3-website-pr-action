@@ -10,6 +10,8 @@ export default async (bucketName: string, directory: string) => {
 
   const files = await readdir(normalizedPath);
 
+  console.log(files)
+  
   await Promise.all(
     files.map(async filePath => {
       const s3Key = filePathToS3Key(filePath.replace(normalizedPath, ''));
