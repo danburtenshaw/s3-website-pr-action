@@ -13,7 +13,6 @@ export const requiredEnvVars = [
 ];
 
 export default async (bucketName: string, uploadDirectory: string) => {
-  const websiteUrl = `http://${bucketName}.s3-website-us-east-1.amazonaws.com`;
   const { repo } = github.context;
   const branchName = github.context.payload.pull_request!.head.ref;
 
@@ -57,7 +56,11 @@ export default async (bucketName: string, uploadDirectory: string) => {
   });
 
   console.log('Uploading files...');
-  await s3UploadDirectory(bucketName, uploadDirectory);
+  const fileNames = await s3UploadDirectory(bucketName, uploadDirectory);
+  
+  const fileName = fileNames.find((name) => (name.includes('dmg') || name.includes('exe') || name.includes('appimage')) && !name.includes('blockmap'))
+  
+  const websiteUrl = `http://${bucketName}.s3-website-us-east-1.amazonaws.com/${fileName}`;
 
   await githubClient.repos.createDeploymentStatus({
     ...repo,
