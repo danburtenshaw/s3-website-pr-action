@@ -56,11 +56,10 @@ export default async (bucketName: string, uploadDirectory: string) => {
   });
 
   console.log('Uploading files...');
-  const fileNames = await s3UploadDirectory(bucketName, uploadDirectory);
+
+  await s3UploadDirectory(bucketName, uploadDirectory);
   
-  const fileName = fileNames.find((name) => (name.includes('dmg') || name.includes('exe') || name.includes('appimage')) && !name.includes('blockmap'))
-  
-  const websiteUrl = `http://${bucketName}.s3-website-us-east-1.amazonaws.com/${fileName}`;
+  const websiteUrl = `https://${bucketName}.s3-website-us-east-1.amazonaws.com`;
 
   await githubClient.repos.createDeploymentStatus({
     ...repo,
