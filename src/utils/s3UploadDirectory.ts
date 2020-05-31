@@ -10,6 +10,7 @@ export default async (bucketName: string, directory: string) => {
 
   const files = await readdir(normalizedPath);
 
+ 
   console.log(files)
   
   await Promise.all(
