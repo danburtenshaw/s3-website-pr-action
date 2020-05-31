@@ -8,7 +8,8 @@ import mimeTypes from 'mime-types';
 export default async (bucketName: string, directory: string) => {
   const normalizedPath = path.normalize(directory);
 
-  const files = await readdir(normalizedPath);  
+  const files = await readdir(normalizedPath);
+
   await Promise.all(
     files.map(async filePath => {
       const s3Key = filePathToS3Key(filePath.replace(normalizedPath, ''));
