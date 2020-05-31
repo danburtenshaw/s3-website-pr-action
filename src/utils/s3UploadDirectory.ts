@@ -9,11 +9,8 @@ export default async (bucketName: string, directory: string) => {
   const normalizedPath = path.normalize(directory);
 
   const files = await readdir(normalizedPath);
-
- 
-  console.log(files)
   
-  await Promise.all(
+  return await Promise.all(
     files.map(async filePath => {
       const s3Key = filePathToS3Key(filePath.replace(normalizedPath, ''));
 
@@ -32,6 +29,8 @@ export default async (bucketName: string, directory: string) => {
           ServerSideEncryption: 'AES256',
           ContentType: mimeType
         }).promise();
+        
+        return s3Key
       } catch (e) {
         const message = `Failed to upload ${s3Key}: ${e.code} - ${e.message}`;
         console.log(message);
