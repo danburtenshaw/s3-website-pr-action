@@ -56,7 +56,6 @@ export default async (bucketName: string, uploadDirectory: string) => {
   });
 
   console.log('Uploading files...');
-
   await s3UploadDirectory(bucketName, uploadDirectory);
   
   const websiteUrl = `https://${bucketName}.s3-website-us-east-1.amazonaws.com`;
